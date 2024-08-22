@@ -3,9 +3,11 @@ const { getUserByUsername } = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
+    console.log('Login request:', req.body);
     const { username, password } = req.body;
     try {
+        console.log('Login request:', username);
         const user = await getUserByUsername(username);
         if (!user) {//user doesnt exist
             return res.sendStatus(401); // Unauthorized

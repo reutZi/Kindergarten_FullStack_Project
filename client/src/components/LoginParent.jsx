@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Box, TextField, Button, Typography } from '@mui/material';
 
-const API_URL = 'http://localhost:4000/user';
+const API_URL = 'http://localhost:4000';
 
 const schema = yup.object().shape({
     userName: yup.string().required('שם משתמש הוא שדה חובה'),
