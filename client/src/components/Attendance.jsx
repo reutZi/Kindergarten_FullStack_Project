@@ -100,29 +100,29 @@ const Attendance = () => {
   return (
     <div className="container mx-auto mt-4 rtl">
       {/* Flex container to align title on the right and DatePicker/Input on the left */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-4xl font-bold text-right">נוכחות</h1> {/* Title on the right */}
+      <div className="flex items-center justify-between mb-4">
         <div className="flex space-x-4 justify-end"> {/* DatePicker/Input on the left */}
           <DatePicker setDate={setDate} />
           <Input
             type="text"
             placeholder="חפש ילד"
             value={searchTerm}
-            className="text-left w-40" 
+            className="text-right w-40"
             onChange={handleSearch}
           />
         </div>
+        <h1 className="text-4xl font-bold text-right ml-4">נוכחות</h1> {/* Title on the right */}
       </div>
 
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-collapse">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border p-2 text-right">סמן נוכחות</th>
-              <th className="border p-2 text-right">שם</th>
-              <th className="border p-2 text-right">שעת כניסה</th>
-              <th className="border p-2 text-right">שעת יציאה</th>
               <th className="border p-2 text-right">סיבת היעדרות</th>
+              <th className="border p-2 text-right">שעת יציאה</th>
+              <th className="border p-2 text-right">שעת כניסה</th>
+              <th className="border p-2 text-right">שם</th>
+              <th className="border p-2 text-right">סמן נוכחות</th>
             </tr>
           </thead>
           <tbody>
