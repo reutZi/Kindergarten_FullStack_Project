@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); 
 const kindergartenRoutes = require('./routes/kindergartenRoutes');
 const childrenRoutes = require('./routes/childrenRoutes');
 const parentRoutes = require('./routes/parentRoutes');
@@ -7,6 +7,9 @@ const teacherRoutes = require('./routes/teacherRoutes');
 const userRoutes = require('./routes/userRoutes');
 const { authenticateToken, authorizeRole } = require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
+
+
+require('dotenv').config();
 
 const app = express();
 

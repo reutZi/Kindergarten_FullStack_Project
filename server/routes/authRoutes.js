@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    console.log('Login request:', req.body);
+    console.log('im here');
     const { username, password } = req.body;
     try {
         console.log('Login request:', username);

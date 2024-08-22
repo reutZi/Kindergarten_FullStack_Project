@@ -19,11 +19,13 @@ const LoginParent = ({ role, setRole, login }) => {
 
     const onSubmit = async (data) => {
         try {
+
             //get athontication token
             const loginResponse = await axios.post(`${API_URL}/login`, {
                 username: data.userName,
                 password: data.password
             });
+            
             const { token, user } = loginResponse.data;
             if (!token) {
                 throw new Error('Login failed, no token received');
@@ -32,11 +34,12 @@ const LoginParent = ({ role, setRole, login }) => {
             localStorage.setItem('token', token);
             //use user data
             if (user.password === data.password) {
-                login(user.username);
+                login(user);
             } else {
                 throw new Error('סיסמה שגויה');
             }
         } catch (error) {
+            console.log("the problem is here")
             alert(error.message);
         }
     };
