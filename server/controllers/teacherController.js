@@ -25,9 +25,10 @@ const getTeacherById = async (req, res) => {
     try {
         const teacher = await new Promise((resolve, reject) => {
             db.query(`
-                SELECT id, first_name, last_name, phone
+                SELECT users.id, users.first_name, users.last_name, users.phone, teacher.kin_id as kin_id
                 FROM users
-                WHERE role = 'teacher' AND id = ?
+                JOIN teacher ON users.id = teacher.tid
+                WHERE users.role = 'teacher' AND users.id = ?
             `, [id], (err, results) => {
                 if (err) return reject(err);
                 resolve(results.length ? results[0] : null);
@@ -39,6 +40,7 @@ const getTeacherById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching teacher', error: err });
     }
 };
+
 
 module.exports = {
     getAllTeachers,

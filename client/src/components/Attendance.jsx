@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios';
-import { DatePicker } from './DatePicker'; // Assuming DatePicker is RTL compatible
-import { Checkbox } from "../componentsSHADCN/ui/checkbox"; // Assuming Checkbox is a custom component in shadcn
-import { Input } from "../componentsSHADCN/ui/input"; // Assuming Input is a custom component in shadcn
+import { DatePicker } from './DatePicker'; 
+import { Checkbox } from "../componentsSHADCN/ui/checkbox"; 
+import { Input } from "../componentsSHADCN/ui/input";
 
 const Attendance = () => {
   const [date, setDate] = useState(new Date());
@@ -23,6 +23,7 @@ const Attendance = () => {
 
         const teacherResponse = await axios.get(`http://localhost:4000/teacher/${user.id}`);
         const teacher = teacherResponse.data;
+        console.log('teacher: ', teacher);
 
         if (!teacher) {
           alert("Teacher not found.");
@@ -54,7 +55,7 @@ const Attendance = () => {
     };
 
     fetchTeacherAndAttendance();
-  }, [date, user]);
+  },[]);
 
   const handleCheckInOut = (id) => {
     const updatedChildren = children.map((child) => {
@@ -86,7 +87,7 @@ const Attendance = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm((event.target.value).tolowercase());
   };
 
   const filteredChildren = children.filter((child) =>
@@ -128,14 +129,13 @@ const Attendance = () => {
           <tbody>
             {filteredChildren.map((child) => (
               <tr key={child.id} className="border-t">
-                <td className="border p-2 text-right">
-                  <Checkbox
-                    checked={child.attendance}
-                    onChange={() => handleCheckInOut(child.id)}
+                 <td className="border p-2 text-right">
+                  <Input
+                    placeholder="סיבת היעדרות"
+                    value={child.absenceReason}
+                    onChange={(e) => handleTimeChange(child.id, 'absenceReason', e.target.value)}
+                    className="text-right"
                   />
-                </td>
-                <td className="border p-2 text-right">
-                  {`${child.first_name} ${child.last_name}`}
                 </td>
                 <td className="border p-2 text-right">
                   {child.attendance ? (
@@ -162,11 +162,12 @@ const Attendance = () => {
                   )}
                 </td>
                 <td className="border p-2 text-right">
-                  <Input
-                    placeholder="סיבת היעדרות"
-                    value={child.absenceReason}
-                    onChange={(e) => handleTimeChange(child.id, 'absenceReason', e.target.value)}
-                    className="text-right"
+                  {`${child.first_name} ${child.last_name}`}
+                </td>
+                <td className="border p-2 text-right">
+                  <Checkbox
+                    checked={child.attendance}
+                    onChange={() => handleCheckInOut(child.id)}
                   />
                 </td>
               </tr>

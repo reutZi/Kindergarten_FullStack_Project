@@ -5,6 +5,7 @@ const childrenRoutes = require('./routes/childrenRoutes');
 const parentRoutes = require('./routes/parentRoutes');
 const teacherRoutes = require('./routes/teacherRoutes');
 const userRoutes = require('./routes/userRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/children', childrenRoutes);
 app.use('/parent', parentRoutes);
 app.use('/teacher', teacherRoutes);
 app.use('/user', userRoutes);
+app.use('/attendance', attendanceRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
