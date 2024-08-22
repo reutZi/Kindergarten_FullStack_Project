@@ -19,24 +19,23 @@ const LoginParent = ({ role, setRole, login }) => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.get(`${API_URL}/username/${data.userName}`);
-
-            if (response.data.length === 0) {
-                throw new Error('שם משתמש לא קיים');
+            //get athontication token
+            const loginResponse = await axios.post(`${API_URL}/login`, {
+                username: data.userName,
+                password: data.password
+            });
+            const { token, user } = loginResponse.data;
+            if (!token) {
+                throw new Error('Login failed, no token received');
             }
-
-            if(response.data.role !== role) {
-                throw new Error('שם משתמש לא קיים');
-            }
-
-            const user = response.data;
-
+            //save token
+            localStorage.setItem('token', token);
+            //use user data
             if (user.password === data.password) {
-                login(user);
+                login(user.username);
             } else {
                 throw new Error('סיסמה שגויה');
             }
-
         } catch (error) {
             alert(error.message);
         }
