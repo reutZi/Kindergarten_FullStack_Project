@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
-import { Box, Container, TextField, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { format } from 'date-fns';
 import axios from 'axios';
-import { DatePicker } from './DatePicker';
+import { DatePicker } from './DatePicker'; // Assuming DatePicker is RTL compatible
+import { Checkbox } from "../componentsSHADCN/ui/checkbox"; // Assuming Checkbox is a custom component in shadcn
+import { Input } from "../componentsSHADCN/ui/input"; // Assuming Input is a custom component in shadcn
 
 const Attendance = () => {
   const [date, setDate] = useState(new Date());
@@ -13,7 +13,6 @@ const Attendance = () => {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // Check if user is teacher and fetch the corresponding kindergarten
   useEffect(() => {
     const fetchTeacherAndAttendance = async () => {
       try {
@@ -22,7 +21,6 @@ const Attendance = () => {
           return;
         }
 
-        // Fetch teacher details by user id
         const teacherResponse = await axios.get(`http://localhost:4000/teacher/${user.id}`);
         const teacher = teacherResponse.data;
 
@@ -31,11 +29,9 @@ const Attendance = () => {
           return;
         }
 
-        // Fetch children by kindergarten ID
         const childrenResponse = await axios.get(`http://localhost:4000/children/kindergarten/${teacher.kin_id}`);
         const fetchedChildren = childrenResponse.data;
 
-        // Initialize children with their attendance records for the selected date
         const attendancePromises = fetchedChildren.map(async (child) => {
           const attendanceResponse = await axios.get(`http://localhost:4000/attendance/${child.id}`);
           const attendanceRecord = attendanceResponse.data.find(record => record.date === format(date, 'yyyy-MM-dd'));
@@ -102,75 +98,83 @@ const Attendance = () => {
   }
 
   return (
-    <Container sx={{ marginTop: 4, direction: 'rtl' }}>
-      <h1>נוכחות</h1>
+    <div className="container mx-auto mt-4 rtl">
+      {/* Flex container to align title on the right and DatePicker/Input on the left */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-bold text-right">נוכחות</h1> {/* Title on the right */}
+        <div className="flex space-x-4 justify-end"> {/* DatePicker/Input on the left */}
+          <DatePicker setDate={setDate} />
+          <Input
+            type="text"
+            placeholder="חפש ילד"
+            value={searchTerm}
+            className="text-left w-40" 
+            onChange={handleSearch}
+          />
+        </div>
+      </div>
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ marginBottom: 2 }}>
-        <DatePicker setDate={setDate} />
-        <TextField
-          label="חפש ילד"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-      </Box>
-
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="right">סמן נוכחות</TableCell>
-              <TableCell align="right">שם</TableCell>
-              <TableCell align="right">שעת כניסה</TableCell>
-              <TableCell align="right">שעת יציאה</TableCell>
-              <TableCell align="right">סיבת היעדרות</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto border-collapse">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2 text-right">סמן נוכחות</th>
+              <th className="border p-2 text-right">שם</th>
+              <th className="border p-2 text-right">שעת כניסה</th>
+              <th className="border p-2 text-right">שעת יציאה</th>
+              <th className="border p-2 text-right">סיבת היעדרות</th>
+            </tr>
+          </thead>
+          <tbody>
             {filteredChildren.map((child) => (
-              <TableRow key={child.id}>
-                <TableCell align="left">
+              <tr key={child.id} className="border-t">
+                <td className="border p-2 text-right">
                   <Checkbox
                     checked={child.attendance}
                     onChange={() => handleCheckInOut(child.id)}
                   />
-                </TableCell>
-                <TableCell align="left">{`${child.first_name} ${child.last_name}`}</TableCell>
-                <TableCell align="left">
+                </td>
+                <td className="border p-2 text-right">
+                  {`${child.first_name} ${child.last_name}`}
+                </td>
+                <td className="border p-2 text-right">
                   {child.attendance ? (
-                    <TextField
+                    <Input
                       type="time"
                       value={child.checkInTime}
                       onChange={(e) => handleTimeChange(child.id, 'checkInTime', e.target.value)}
+                      className="text-right"
                     />
                   ) : (
                     ''
                   )}
-                </TableCell>
-                <TableCell align="left">
+                </td>
+                <td className="border p-2 text-right">
                   {child.attendance ? (
-                    <TextField
+                    <Input
                       type="time"
                       value={child.checkOutTime}
                       onChange={(e) => handleTimeChange(child.id, 'checkOutTime', e.target.value)}
+                      className="text-right"
                     />
                   ) : (
                     ''
                   )}
-                </TableCell>
-                <TableCell align="left">
-                  <TextField
+                </td>
+                <td className="border p-2 text-right">
+                  <Input
                     placeholder="סיבת היעדרות"
                     value={child.absenceReason}
                     onChange={(e) => handleTimeChange(child.id, 'absenceReason', e.target.value)}
+                    className="text-right"
                   />
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

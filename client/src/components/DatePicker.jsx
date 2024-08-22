@@ -13,7 +13,7 @@ import {
 import { useState } from "react"
 
 export function DatePicker() {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
 
   return (
     <Popover>
@@ -25,7 +25,7 @@ export function DatePicker() {
             !date && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <CalendarIcon className="opacity-100 mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
