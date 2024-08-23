@@ -1,14 +1,12 @@
 const express = require('express');
-const { getUserByUsername } = require('../controllers/userController');
+const { userByUsername } = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    console.log('im here');
     const { username, password } = req.body;
     try {
-        console.log('Login request:', username);
-        const user = await getUserByUsername(username);
+        const user = await userByUsername(username);
         if (!user) {//user doesnt exist
             return res.sendStatus(401); // Unauthorized
         }//should hash?
@@ -27,6 +25,5 @@ router.post('/', async (req, res) => {
         res.sendStatus(500); // Internal Server Error
     }
 });
-
 
 module.exports = router;

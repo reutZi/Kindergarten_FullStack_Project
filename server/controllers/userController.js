@@ -49,6 +49,20 @@ const getUserByUsername = async (req, res) => {
     }
 };
 
+const userByUsername = async (username) => {
+    try {
+        const user = await new Promise((resolve, reject) => {
+            db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+                if (err) return reject(err);
+                resolve(results.length ? results[0] : null);
+            });
+        });
+        return user;  // Return the user object (or null if not found)
+    } catch (err) {
+        throw new Error('Error fetching user by username');
+    }
+};
+
 // Get users by role
 const getUsersByRole = async (req, res) => {
     const { role } = req.params;
@@ -125,5 +139,6 @@ module.exports = {
     getUsersByRole,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    userByUsername
 };

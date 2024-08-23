@@ -19,30 +19,30 @@ const LoginParent = ({ role, setRole, login }) => {
 
     const onSubmit = async (data) => {
         try {
-
-            //get athontication token
+            // Post login data to the server
             const loginResponse = await axios.post(`${API_URL}/login`, {
                 username: data.userName,
                 password: data.password
             });
             
             const { token, user } = loginResponse.data;
+    
+            // Check if token was received
             if (!token) {
                 throw new Error('Login failed, no token received');
             }
-            //save token
+    
+            // Save token to local storage
             localStorage.setItem('token', token);
-            //use user data
-            if (user.password === data.password) {
-                login(user);
-            } else {
-                throw new Error('סיסמה שגויה');
-            }
+    
+            login(user);  
+    
         } catch (error) {
-            console.log("the problem is here")
+            console.log("The problem is here:", error.message);
             alert(error.message);
         }
     };
+    
 
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: '100%' }}>
