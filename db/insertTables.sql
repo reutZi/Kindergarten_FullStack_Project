@@ -1,5 +1,8 @@
 USE our_kindergarten;
 
+ALTER TABLE attendance ADD COLUMN absence_reason VARCHAR(255);
+
+
 -- Insert into Kindergarten table
 INSERT INTO kindergarten (id, name, city) 
 VALUES ('K001', 'Happy Kids Kindergarten', 'Springfield');

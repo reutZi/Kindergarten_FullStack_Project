@@ -9,11 +9,15 @@ import { buttonVariants } from "./button"
 function Calendar({
   className,
   classNames,
+  selected, 
+  onSelect,
   showOutsideDays = true,
   ...props
 }) {
   return (
     (<DayPicker
+      selected={selected}
+      onSelect={onSelect}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
