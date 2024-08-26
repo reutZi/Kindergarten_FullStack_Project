@@ -135,7 +135,7 @@ async function getChildAttendanceByDate(childId, date) {
 module.exports = {
     getAllAttendanceRecords,
     getAttendanceByChildId,
-    getAttendanceByDate
-  
+    getAttendanceByDate,
+    getChildAttendanceByDate  
     
 };

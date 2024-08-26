@@ -5,7 +5,6 @@ const { getParentPhoneNumberByID } = require('../controllers/parentController');
 const { getChildAttendanceByDate } = require('..controllers/attendanceController');
 
 
-
 // Notify the parent if the child is not in class
 async function checkAttendanceAndNotify(child) {
     const today = new Date().toISOString().split('T')[0];
