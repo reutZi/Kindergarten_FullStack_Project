@@ -11,6 +11,7 @@ const Login = () => {
     // Login function that saves the user info to localStorage and navigates
     const login = (user) => {
         localStorage.setItem('user', JSON.stringify(user));
+  
         
         // Navigate based on the user's role
         if (role === 'parent') {

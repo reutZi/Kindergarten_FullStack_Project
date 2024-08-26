@@ -34,7 +34,6 @@ const LoginParent = ({ role, setRole, login }) => {
     
             // Save token to local storage
             localStorage.setItem('token', token);
-    
             login(user);  
     
         } catch (error) {
