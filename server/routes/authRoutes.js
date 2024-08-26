@@ -17,6 +17,8 @@ router.post('/', async (req, res) => {
         const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         //remove sensitive data
        const { password: _, ...userWithoutPassword } = user;
+
+
        // Send the token and user data back to the user  
        res.json({ token, user: userWithoutPassword });
 

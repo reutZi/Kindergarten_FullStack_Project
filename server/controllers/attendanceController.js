@@ -47,8 +47,28 @@ const getAttendanceByDate = async (req, res) => {
     }
 };
 
+// Get child attendance by date
+async function getChildAttendanceByDate(childId, date) {
+    try {
+        const attendanceQuery = `
+            SELECT * FROM attendance 
+            WHERE cid = ? AND date = ? AND is_absent = 0
+        `;
+        const result = await new Promise((resolve, reject) => {
+            db.query(attendanceQuery, [childId, date], (err, results) => {
+                if (err) return reject(err);
+                resolve(results.length > 0);
+            });
+        });
+        return result;
+    } catch (error) {
+        console.error('Error checking attendance:', error);
+        return false;
+    }
+}
 module.exports = {
     getAllAttendanceRecords,
     getAttendanceByChildId,
-    getAttendanceByDate
+    getAttendanceByDate,
+    getChildAttendanceByDate
 };

@@ -91,10 +91,40 @@ const deleteParent = async (req, res) => {
         res.status(500).json({ message: 'Error deleting parent', error: err });
     }
 };
+// Get parent's phone number by child ID
+const getParentPhoneNumberByID = async (req, res) => {
+    const { childId } = req.params;
+
+    try {
+        const parentPhoneNumber = await new Promise((resolve, reject) => {
+            const parentPhoneQuery = `
+                SELECT u.phone 
+                FROM parent p
+                JOIN users u ON p.pid = u.id
+                WHERE p.cid = ?
+            `;
+            db.query(parentPhoneQuery, [childId], (err, results) => {
+                if (err) return reject(err);
+                resolve(results.length ? results[0].phone : null);
+            });
+        });
+
+        if (!parentPhoneNumber) {
+            return res.status(404).json({ message: 'Parent phone number not found' });
+        }
+
+        res.status(200).json({ phoneNumber: parentPhoneNumber });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching parent phone number', error: err });
+    }
+};
+
+
 
 module.exports = {
     getAllParents,
     getParentById,
     updateParent,
-    deleteParent
+    deleteParent,
+    getParentPhoneNumberByID
 };
