@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get('/', getAllAttendanceRecords);
 router.get('/:cid', getAttendanceByChildId);
-router.get('/date/:date', getAttendanceByDate);
+router.get('/:kindergartenId/:date', getAttendanceByDate);
 
 module.exports = router;

@@ -1,16 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
-import Attendance from './components/Attendance';
-import Welcome from './components/Welcome';
+import AttendanceTeacher from './components/Teacher/AttendanceTeacher';
+import AttendanceParent from './components/Parent/AttendanceParent';
+import Welcome from './components/Parent/Welcome';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="teacher/attendance" element={<Attendance />} />
+        <Route path="parent/attendance" element={<AttendanceParent />} />
+        <Route path="teacher/attendance" element={<AttendanceTeacher />} />
         <Route path="parent/welcome" element={<Welcome />} />
+
       </Routes>
     </Router>
   );

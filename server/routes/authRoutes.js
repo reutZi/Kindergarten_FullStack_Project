@@ -2,29 +2,38 @@ const express = require('express');
 const { userByUsername } = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const db = require('../connectDB');
 
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
+
     try {
-        const user = await userByUsername(username);
-        if (!user) {//user doesnt exist
-            return res.sendStatus(401); // Unauthorized
-        }//should hash?
-        if (user.password !== password) {//password is incorect
-            return res.sendStatus(401); // Unauthorized
+        const user = await userByUsername(username); // Existing function
+
+        if (!user || user.password !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
-        // the user is authorized - Create a token with the user's role
+
+        let kindergartenId = null;
+        
+        // If the user is a teacher, fetch their kindergarten_id
+        if (user.role === 'teacher') {
+            const [results] = await db.promise().query('SELECT kin_id FROM teacher WHERE tid = ?', [user.id]);
+            if (results.length > 0) {
+                kindergartenId = results[0].kin_id;
+            }
+        }
+
         const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        //remove sensitive data
-       const { password: _, ...userWithoutPassword } = user;
 
+        const { password: _, ...userWithoutPassword } = user;
 
-       // Send the token and user data back to the user  
-       res.json({ token, user: userWithoutPassword });
+        // Include kindergarten_id if the user is a teacher
+        res.json({ token, user: { ...userWithoutPassword, kindergarten_id: kindergartenId } });
 
     } catch (error) {
         console.error('Error during login:', error);
-        res.sendStatus(500); // Internal Server Error
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
