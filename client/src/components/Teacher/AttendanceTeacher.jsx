@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import { he } from 'date-fns/locale'; // Import your preferred locale (e.g. Hebrew)
 import axios from 'axios';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-//import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Checkbox, TextField, Button } from '@mui/material';
 import { ClipLoader } from 'react-spinners';
 
@@ -43,13 +44,13 @@ const Attendance = () => {
   const handleCheckInOut = (id) => {
     const updatedChildren = childrenWithAttendance.map((child) => {
       if (child.cid === id) {
-        const now = format(new Date(), 'HH:mm');
+        const now = format(new Date(), 'HH:mm'); // Get current time as 'HH:mm'
         return {
           ...child,
-          is_absent: !child.is_absent,
-          check_in_time: !child.is_absent ? now : '',
-          check_out_time: !child.is_absent ? '14:00' : '',
-          absence_reason: !child.is_absent ? '' : child.absence_reason,
+          is_absent: !child.is_absent, // Toggle absence
+          check_in_time: child.is_absent ? now : '', // Set check-in time if child is now present
+          check_out_time: child.is_absent ? '14:00' : '', // Set check-out time if child is now present
+          absence_reason: child.is_absent ? '' : child.absence_reason, // Clear absence reason if child is now present
         };
       }
       return child;
@@ -87,9 +88,9 @@ const Attendance = () => {
     }
   };
 
-  const filteredChildren = childrenWithAttendance.filter((child) =>
-    `${child.first_name.toLowerCase()} ${child.last_name.toLowerCase()}`.includes(searchTerm.toLowerCase())
-  );
+  const filteredChildren = childrenWithAttendance.filter((child) => {
+    return `${child.first_name.toLowerCase()} ${child.last_name.toLowerCase()}`.includes(searchTerm.toLowerCase())
+  });
 
   if (isLoading) {
     return (
@@ -100,16 +101,24 @@ const Attendance = () => {
   }
 
   return (
-   // <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={he}> {/* Setting locale */}
       <div className="container mx-auto mt-4 rtl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex space-x-4 justify-end">
+            <DatePicker
+              label="בחר תאריך"
+              value={date}
+              onChange={(newDate) => setDate(newDate)}
+              format="dd-MM-yyyy" // Custom date format
+              slotProps={{ textField: { variant: 'outlined' } }}
+            />
             <TextField
               type="text"
               placeholder="חפש ילד"
               value={searchTerm}
               className="text-right w-40"
               onChange={handleSearch}
+              inputProps={{ dir: 'rtl' }} // Right-to-left text direction
             />
           </div>
           <h1 className="text-4xl font-bold text-right ml-4">נוכחות</h1>
@@ -135,11 +144,12 @@ const Attendance = () => {
                       value={child.absence_reason || ''}
                       onChange={(e) => handleTimeChange(child.cid, 'absence_reason', e.target.value)}
                       className="text-right"
-                      disabled={!child.is_absent}
+                      disabled={!child.is_absent} 
+                      inputProps={{ dir: 'rtl' }} 
                     />
                   </td>
                   <td className="border p-2 text-right">
-                    {child.is_absent ? (
+                    {!child.is_absent ? (
                       <TextField
                         type="time"
                         value={child.check_out_time || ''}
@@ -151,7 +161,7 @@ const Attendance = () => {
                     )}
                   </td>
                   <td className="border p-2 text-right">
-                    {child.is_absent ? (
+                    {!child.is_absent ? (
                       <TextField
                         type="time"
                         value={child.check_in_time || ''}
@@ -186,7 +196,7 @@ const Attendance = () => {
           </Button>
         </div>
       </div>
-   // </LocalizationProvider>
+    </LocalizationProvider>
   );
 };
 
