@@ -67,3 +67,34 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Add this to your existing CSS */
+
+/* Container for the sidebar and the content */
+.main-container {
+  display: flex;
+  min-height: 100vh; /* Ensures the container takes the full viewport height */
+}
+
+/* Ensure the content takes up the remaining space next to the sidebar */
+.content {
+  flex-grow: 1; /* Ensures the content area expands to take up available space */
+  padding: 20px; /* Optional: add some padding for the content */
+  margin-left: var(--side-bar-width); /* Push content to the right, away from the sidebar */
+}
+
+/* Adjusting the height of the table wrapper */
+.table-container {
+  overflow-x: auto;
+  max-height: calc(100vh - 200px); /* Adjust this to fit your desired layout */
+}
+
+.sidebar {
+  width: var(--side-bar-width);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+}
+

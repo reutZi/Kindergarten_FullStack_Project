@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import LoginParent from './LoginParent';
-import backgroundImage from '../images/img.png';
+import backgroundImage from '../img/background.png';
 
 const Login = () => {
     const [role, setRole] = useState('parent');
