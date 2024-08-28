@@ -12,10 +12,9 @@ const NavBar = () => {
         { to: `${role}/calendar`, imgSrc: require('../img/calendar.png'), title: 'לוח שנה' },
         { to: `${role}/noticeBoard`, imgSrc: require('../img/noticeBoard.png'), title: 'הודעות' },
         { to: `${role}/whats_new`, imgSrc: require('../img/whatsnew.png'), title: '?מה חדש' },
-        { to: `${role}/login`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
+        { to: `${role}/`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
     ];
     
-      
   return (
     <div className="sidebar">
       <img className="logo-img nav-link" src="/client/img/logo.png" alt="" />

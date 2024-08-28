@@ -1,0 +1,65 @@
+/* attendance.css */
+
+/* Container for the entire attendance component */
+.attendance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px; /* Adds margin from the top */
+}
+
+/* Styling for the Calendar component */
+.attendance-calendar {
+  width: 100%;
+  max-width: 1200px; /* Limits the maximum width of the calendar */
+  margin: 60px auto;
+}
+
+/* Dialog styling for both past and future dialogs */
+.attendance-dialog {
+  width: 600px;
+  max-width: 100%;
+  height: 600px; /* Sets the height of the dialog */
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dialog-content {
+  padding: 50px;
+  text-align: right; /* Right-aligns the text for RTL languages */
+}
+
+/* Ensure all text fields and form controls are right-aligned */
+.attendance-dialog .MuiFormControl-root {
+  text-align: right;
+  direction: rtl;
+}
+
+.attendance-dialog .MuiInputBase-input {
+  text-align: right;
+  direction: rtl;
+}
+
+.attendance-dialog h3 {
+  margin-bottom: 20px;
+  text-align: right;
+  direction: rtl;
+}
+
+
+/* Centering the dialog */
+.attendance-dialog .MuiDialog-paper {
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  /* Ensuring responsive behavior for smaller screens */
+  @media (max-width: 768px) {
+    .attendance-dialog .MuiDialog-paper {
+      max-width: 90%;
+      width: 90%;
+    }
+  }
+  

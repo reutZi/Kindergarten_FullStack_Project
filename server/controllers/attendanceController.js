@@ -151,8 +151,6 @@ const saveAllAttendanceRecords = async (req, res) => {
     }
 };
 
-  
-
 
 module.exports = {
     getAllAttendanceRecords,
