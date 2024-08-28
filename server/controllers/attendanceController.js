@@ -39,7 +39,7 @@ const getAttendanceByChildId = async (req, res) => {
                 check_out_time: null,
                 is_absent: true,
                 absence_reason: '',
-                expected_in_time: '08:00:00', // Set default expected in time
+                expected_in_time: null, // Set default expected in time
             };
 
             await new Promise((resolve, reject) => {

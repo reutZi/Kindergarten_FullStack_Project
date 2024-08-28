@@ -22,7 +22,7 @@
 }
 
 .content {
-  @apply flex-grow p-4; /* Content area grows to fill the remaining space */
+  @apply flex-grow; /* Content area grows to fill the remaining space */
   margin-left: var(--side-bar-width); /* Ensures content doesn't overlap with the sidebar */
 }
 

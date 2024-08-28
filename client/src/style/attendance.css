@@ -48,6 +48,10 @@
   direction: rtl;
 }
 
+.main-container {
+  margin-right: 30px;
+}
+
 
 /* Centering the dialog */
 .attendance-dialog .MuiDialog-paper {
@@ -62,4 +66,6 @@
       width: 90%;
     }
   }
+
+
   

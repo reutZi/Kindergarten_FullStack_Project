@@ -32,9 +32,9 @@ const AttendanceParent = () => {
       const requestData = {
         cid: childId,
         date: selectedDate.toISOString().split('T')[0],
-        is_absent: data.isAbsent,
-        expected_in_time: data.expectedInTime || '08:00',
-        absence_reason: data.absenceReason || '',
+        is_absent: data.is_absent,
+        expected_in_time: data.expected_in_time || '08:00',
+        absence_reason: data.absence_reason || '',
       };
       await axios.post(`http://localhost:4000/parent/attendance/${childId}/save`, requestData, {
         headers: {

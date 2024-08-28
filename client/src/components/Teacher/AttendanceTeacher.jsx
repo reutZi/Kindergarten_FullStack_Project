@@ -126,11 +126,12 @@ const Attendance = () => {
               <h1 className="text-4xl font-bold text-right ml-4">נוכחות</h1>
             </div>
 
-            <div className="table-container">
+            <div className="table-container overflow-auto max-h-[400px]">
               <table className="min-w-full table-auto border-collapse">
                 <thead>
                   <tr className="bg-gray-200">
                     <th className="border p-2 text-right">סיבת היעדרות</th>
+                    <th className="border p-2 text-right">שעת הגעה צפויה</th>
                     <th className="border p-2 text-right">שעת יציאה</th>
                     <th className="border p-2 text-right">שעת כניסה</th>
                     <th className="border p-2 text-right">שם</th>
@@ -149,6 +150,20 @@ const Attendance = () => {
                           disabled={!child.is_absent}
                           inputProps={{ dir: 'rtl' }}
                         />
+                      </td>
+                      <td className="border p-2 text-right">
+                        {child.absence_reason ? (
+                          <span>--:--</span>
+                        ) : (
+                          <CustomTimePicker
+                            label="שעת הגעה צפויה"
+                            value={child.expected_in_time || '08:00'}
+                            onChange={(time) => handleTimeChange(child.cid, 'expected_in_time', time)}
+                            minTime="07:00"
+                            maxTime="10:00"
+                            step={30} // 30-minute intervals
+                          />
+                        )}
                       </td>
                       <td className="border p-2 text-right">
                         {!child.is_absent ? (
