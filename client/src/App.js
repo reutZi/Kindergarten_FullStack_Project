@@ -22,9 +22,9 @@ function AppContent() {
           <Route path="/" element={<Login />} />
           <Route path="parent/attendance" element={<AttendanceParent />} />
           <Route path="teacher/attendance" element={<AttendanceTeacher />} />
-          <Route path="parent/choosekid" element={<ChooseKid />} />
+          <Route path="parent/chooseKid" element={<ChooseKid />} />
           <Route path="noticeboard" element={<NoticeBoard user={user}/>} />
-          <Route path="whatsnew" element={<WhatsNew user={user}/>} />
+          <Route path="whatsNew" element={<WhatsNew user={user}/>} />
         </Routes>
       </div>
     </div>

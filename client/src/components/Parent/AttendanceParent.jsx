@@ -31,8 +31,8 @@ const AttendanceParent = () => {
     try {
       const requestData = {
         cid: childId,
-        date: selectedDate.toISOString().split('T')[0],
-        is_absent: data.is_absent,
+        date: data.date,
+        is_absent: data.is_absent || false,
         expected_in_time: data.expected_in_time || '08:00',
         absence_reason: data.absence_reason || '',
       };

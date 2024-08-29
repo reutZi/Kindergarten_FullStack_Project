@@ -11,9 +11,10 @@ const FutureAttendanceDialog = ({ open, onClose, onSave, date }) => {
   const childName = JSON.parse(localStorage.getItem('user')).children[0].first_name;
 
   const handleSave = () => {
+    console.log('date:', date);
     const attendanceData = attendanceType === 'late' 
-      ? { expected_in_time: expectedInTime }
-      : { is_absent: true, absence_reason: absenceReason };
+      ? { expected_in_time: expectedInTime , date: date }
+      : { is_absent: true, absence_reason: absenceReason , date: date };
     onSave(attendanceData);
   };
 

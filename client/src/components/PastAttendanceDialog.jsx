@@ -3,15 +3,14 @@ import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
 
 const PastAttendanceDialog = ({ open, onClose, attendanceData, date }) => {
 
-    console.log('date:', date);
-
   const formattedDate = date ? date.toLocaleDateString('he-IL') : 'תאריך לא ידוע'; 
+  const isAbsent = attendanceData.is_absent || false;
   
   return (
     <Dialog open={open} onClose={onClose} className='attendance-dialog'>
       <DialogContent className='dialog-content'>
         <h3>נוכחות ל-{formattedDate}</h3>
-        {attendanceData.is_absent ? (
+        {isAbsent ? (
           <>
             <p>היעדרות: {attendanceData.absence_reason || "לא צוינה סיבת היעדרות"}</p>
           </>

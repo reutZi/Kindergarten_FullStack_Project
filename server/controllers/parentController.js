@@ -185,23 +185,34 @@ const saveAttendanceRecord = async (req, res) => {
         // Ensure the date is in the correct format
         const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : null;
 
+        console.log('formattedDate: ', formattedDate);
+
         // Prepare the attendance data, setting null explicitly for missing fields
         const attendanceData = {
-            check_in_time: typeof check_in_time !== 'undefined' ? check_in_time : null,
-            check_out_time: typeof check_out_time !== 'undefined' ? check_out_time : null,
-            is_absent: typeof is_absent !== 'undefined' ? is_absent : null,
-            absence_reason: typeof absence_reason !== 'undefined' ? absence_reason : null,
-            expected_in_time: typeof expected_in_time !== 'undefined' ? expected_in_time : null,
+            check_in_time: check_in_time || null,
+            check_out_time: check_out_time || null,
+            is_absent: is_absent || null,
+            absence_reason: absence_reason || null,
+            expected_in_time: expected_in_time || null,
         };
 
         const result = await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO attendance (cid, date, check_in_time, check_out_time, is_absent, absence_reason, expected_in_time) 
                  VALUES (?, ?, ?, ?, ?, ?, ?) 
-                 ON DUPLICATE KEY UPDATE check_in_time = ?, check_out_time = ?, is_absent = ?, absence_reason = ?, expected_in_time = ?`,
+                 ON DUPLICATE KEY UPDATE 
+                     check_in_time = VALUES(check_in_time), 
+                     check_out_time = VALUES(check_out_time), 
+                     is_absent = VALUES(is_absent), 
+                     absence_reason = VALUES(absence_reason), 
+                     expected_in_time = VALUES(expected_in_time)`,
                 [
-                    cid, formattedDate, attendanceData.check_in_time, attendanceData.check_out_time, attendanceData.is_absent, attendanceData.absence_reason, attendanceData.expected_in_time,
-                    attendanceData.check_in_time, attendanceData.check_out_time, attendanceData.is_absent, attendanceData.absence_reason, attendanceData.expected_in_time,
+                    cid, formattedDate, 
+                    attendanceData.check_in_time, 
+                    attendanceData.check_out_time, 
+                    attendanceData.is_absent, 
+                    attendanceData.absence_reason, 
+                    attendanceData.expected_in_time
                 ],
                 (err, result) => {
                     if (err) return reject(err);
@@ -216,6 +227,7 @@ const saveAttendanceRecord = async (req, res) => {
         return res.status(500).json({ error: 'Failed to save attendance record' });
     }
 };
+
 
 
 

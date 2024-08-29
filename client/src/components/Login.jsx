@@ -15,7 +15,7 @@ const Login = () => {
         
         // Navigate based on the user's role
         if (role === 'parent') {
-            navigate('/parent/welcome'); // Navigate to parent welcome page
+            navigate('/parent/choosekid'); // Navigate to parent welcome page
         } else if (role === 'teacher') {
             navigate('/teacher/attendance'); // Navigate to teacher attendance page
         }

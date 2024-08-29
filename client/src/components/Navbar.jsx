@@ -8,10 +8,10 @@ const role = JSON.parse(localStorage.getItem('user')).role;
 const NavBar = () => {
 
     const sidebarOptions = [
+        { to: `/parent/chooseKid`, imgSrc: require('../img/chooseKid.png'), title: 'משתמש' },
         { to: `${role}/attendance`, imgSrc: require('../img/attendance.png'), title: 'נוכחות' },
-        { to: `/calendar`, imgSrc: require('../img/calendar.png'), title: 'לוח שנה' },
         { to: `noticeBoard`, imgSrc: require('../img/noticeBoard.png'), title: 'הודעות' },
-        { to: `whats_new`, imgSrc: require('../img/whatsnew.png'), title: '?מה חדש' },
+        { to: `whatsNew`, imgSrc: require('../img/whatsNew.png'), title: '?מה חדש' },
         { to: `/`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
     ];
     
