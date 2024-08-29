@@ -50,6 +50,7 @@ CREATE TABLE attendance (
   check_out_time TIME,
   is_absent BOOLEAN,
   expected_in_time TIME,
+  absence_reason VARCHAR(255),
   PRIMARY KEY (cid, date),
   FOREIGN KEY (cid) REFERENCES children(id)
 );

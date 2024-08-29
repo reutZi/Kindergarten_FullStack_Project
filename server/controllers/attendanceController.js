@@ -39,7 +39,7 @@ const getAttendanceByChildId = async (req, res) => {
                 check_out_time: null,
                 is_absent: true,
                 absence_reason: '',
-                expected_in_time: '08:00:00', // Set default expected in time
+                expected_in_time: null, // Set default expected in time
             };
 
             await new Promise((resolve, reject) => {
@@ -113,35 +113,43 @@ const getAttendanceByDate = async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch or create attendances' });
     }
 };
-
 const saveAllAttendanceRecords = async (req, res) => {
     const attendances = req.body;
-  
+
     try {
-      const promises = attendances.map((attendance) => {
-        // Ensure the date is in the correct format before updating
-        const formattedDate = format(new Date(attendance.date), 'yyyy-MM-dd');
-        
-        return new Promise((resolve, reject) => {
-          db.query('UPDATE attendance SET ? WHERE cid = ? AND date = ?', 
-            [{ ...attendance, date: formattedDate }, attendance.cid, formattedDate], 
-            (err, result) => {
-              if (err) return reject(err);
-              resolve(result);
-            }
-          );
+        const promises = attendances.map((attendance) => {
+            // Ensure the date is in the correct format before updating
+            const formattedDate = format(new Date(attendance.date), 'yyyy-MM-dd');
+
+            // Only keep the fields that are in the attendance table
+            const attendanceData = {
+                check_in_time: attendance.check_in_time || null,
+                check_out_time: attendance.check_out_time || null,
+                is_absent: attendance.is_absent || false,
+                expected_in_time: attendance.expected_in_time || null,
+                absence_reason: attendance.absence_reason || null,
+            };
+
+            return new Promise((resolve, reject) => {
+                db.query(
+                    'UPDATE attendance SET ? WHERE cid = ? AND date = ?',
+                    [attendanceData, attendance.cid, formattedDate],
+                    (err, result) => {
+                        if (err) return reject(err);
+                        resolve(result);
+                    }
+                );
+            });
         });
-      });
-  
-      await Promise.all(promises);
-  
-      return res.status(200).json({ message: 'Attendance records saved successfully' });
+
+        await Promise.all(promises);
+
+        return res.status(200).json({ message: 'Attendance records saved successfully' });
     } catch (error) {
-      console.error('Error saving attendance records:', error);
-      return res.status(500).json({ error: 'Failed to save attendance records' });
+        console.error('Error saving attendance records:', error);
+        return res.status(500).json({ error: 'Failed to save attendance records' });
     }
-  };
-  
+};
 
 
 module.exports = {
@@ -149,6 +157,4 @@ module.exports = {
     getAttendanceByChildId,
     saveAllAttendanceRecords,
     getAttendanceByDate
-  
-    
 };

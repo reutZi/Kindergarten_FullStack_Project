@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { he } from 'date-fns/locale'; // Import your preferred locale (e.g. Hebrew)
+import { he } from 'date-fns/locale';
 import axios from 'axios';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Checkbox, TextField, Button } from '@mui/material';
 import { ClipLoader } from 'react-spinners';
+import CustomTimePicker from '../CustomTimePicker'; 
+import '../../style/App.css';
 
 const Attendance = () => {
   const [date, setDate] = useState(new Date());
@@ -44,13 +46,11 @@ const Attendance = () => {
   const handleCheckInOut = (id) => {
     const updatedChildren = childrenWithAttendance.map((child) => {
       if (child.cid === id) {
-        const now = format(new Date(), 'HH:mm'); // Get current time as 'HH:mm'
         return {
           ...child,
-          is_absent: !child.is_absent, // Toggle absence
-          check_in_time: child.is_absent ? now : '', // Set check-in time if child is now present
-          check_out_time: child.is_absent ? '14:00' : '', // Set check-out time if child is now present
-          absence_reason: child.is_absent ? '' : child.absence_reason, // Clear absence reason if child is now present
+          is_absent: !child.is_absent,
+          check_in_time: !child.is_absent ? '07:00' : '',
+          check_out_time: !child.is_absent ? '16:00' : '',
         };
       }
       return child;
@@ -89,7 +89,7 @@ const Attendance = () => {
   };
 
   const filteredChildren = childrenWithAttendance.filter((child) => {
-    return `${child.first_name.toLowerCase()} ${child.last_name.toLowerCase()}`.includes(searchTerm.toLowerCase())
+    return `${child.first_name.toLowerCase()} ${child.last_name.toLowerCase()}`.includes(searchTerm.toLowerCase());
   });
 
   if (isLoading) {
@@ -101,99 +101,117 @@ const Attendance = () => {
   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={he}> {/* Setting locale */}
-      <div className="container mx-auto mt-4 rtl">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex space-x-4 justify-end">
-            <DatePicker
-              label="בחר תאריך"
-              value={date}
-              onChange={(newDate) => setDate(newDate)}
-              format="dd-MM-yyyy" // Custom date format
-              slotProps={{ textField: { variant: 'outlined' } }}
-            />
-            <TextField
-              type="text"
-              placeholder="חפש ילד"
-              value={searchTerm}
-              className="text-right w-40"
-              onChange={handleSearch}
-              inputProps={{ dir: 'rtl' }} // Right-to-left text direction
-            />
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={he}>
+      <div className="main-container">
+        <div className="content">
+          <div className="container mx-auto mt-4 rtl">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex space-x-4 justify-end">
+                <DatePicker
+                  label="בחר תאריך"
+                  value={date}
+                  onChange={(newDate) => setDate(newDate)}
+                  format="dd-MM-yyyy"
+                  slotProps={{ textField: { variant: 'outlined' } }}
+                />
+                <TextField
+                  type="text"
+                  placeholder="חפש ילד"
+                  value={searchTerm}
+                  className="text-right w-40"
+                  onChange={handleSearch}
+                  inputProps={{ dir: 'rtl' }}
+                />
+              </div>
+              <h1 className="text-4xl font-bold text-right ml-4">נוכחות</h1>
+            </div>
+
+            <div className="table-container overflow-auto max-h-[400px]">
+              <table className="min-w-full table-auto border-collapse">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="border p-2 text-right">סיבת היעדרות</th>
+                    <th className="border p-2 text-right">שעת הגעה צפויה</th>
+                    <th className="border p-2 text-right">שעת יציאה</th>
+                    <th className="border p-2 text-right">שעת כניסה</th>
+                    <th className="border p-2 text-right">שם</th>
+                    <th className="border p-2 text-right">סמן נוכחות</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredChildren.map((child) => (
+                    <tr key={child.cid} className="border-t">
+                      <td className="border p-2 text-right">
+                        <TextField
+                          placeholder="סיבת היעדרות"
+                          value={child.absence_reason || ''}
+                          onChange={(e) => handleTimeChange(child.cid, 'absence_reason', e.target.value)}
+                          className="text-right"
+                          disabled={!child.is_absent}
+                          inputProps={{ dir: 'rtl' }}
+                        />
+                      </td>
+                      <td className="border p-2 text-right">
+                        {child.absence_reason ? (
+                          <span>--:--</span>
+                        ) : (
+                          <CustomTimePicker
+                            label="שעת הגעה צפויה"
+                            value={child.expected_in_time || '08:00'}
+                            onChange={(time) => handleTimeChange(child.cid, 'expected_in_time', time)}
+                            minTime="07:00"
+                            maxTime="10:00"
+                            step={30} // 30-minute intervals
+                          />
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {!child.is_absent ? (
+                          <CustomTimePicker
+                            label="שעת יציאה"
+                            value={child.check_out_time || '16:00'}
+                            onChange={(time) => handleTimeChange(child.cid, 'check_out_time', time)}
+                            minTime="07:00"
+                            maxTime="16:00"
+                            step={30} // 30-minute intervals
+                          />
+                        ) : null}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {!child.is_absent ? (
+                          <CustomTimePicker
+                            label="שעת כניסה"
+                            value={child.check_in_time || '07:00'}
+                            onChange={(time) => handleTimeChange(child.cid, 'check_in_time', time)}
+                            minTime="07:00"
+                            maxTime={child.check_out_time || '16:00'}
+                            step={30} // 30-minute intervals
+                          />
+                        ) : null}
+                      </td>
+                      <td className="border p-2 text-right">{`${child.first_name} ${child.last_name}`}</td>
+                      <td className="border p-2 text-right">
+                        <Checkbox
+                          checked={!child.is_absent}
+                          onChange={() => handleCheckInOut(child.cid)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <Button
+                variant="contained"
+                onClick={handleSave}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                שמירה
+              </Button>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold text-right ml-4">נוכחות</h1>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border p-2 text-right">סיבת היעדרות</th>
-                <th className="border p-2 text-right">שעת יציאה</th>
-                <th className="border p-2 text-right">שעת כניסה</th>
-                <th className="border p-2 text-right">שם</th>
-                <th className="border p-2 text-right">סמן נוכחות</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredChildren.map((child) => (
-                <tr key={child.cid} className="border-t">
-                  <td className="border p-2 text-right">
-                    <TextField
-                      placeholder="סיבת היעדרות"
-                      value={child.absence_reason || ''}
-                      onChange={(e) => handleTimeChange(child.cid, 'absence_reason', e.target.value)}
-                      className="text-right"
-                      disabled={!child.is_absent} 
-                      inputProps={{ dir: 'rtl' }} 
-                    />
-                  </td>
-                  <td className="border p-2 text-right">
-                    {!child.is_absent ? (
-                      <TextField
-                        type="time"
-                        value={child.check_out_time || ''}
-                        onChange={(e) => handleTimeChange(child.cid, 'check_out_time', e.target.value)}
-                        className="text-right"
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td className="border p-2 text-right">
-                    {!child.is_absent ? (
-                      <TextField
-                        type="time"
-                        value={child.check_in_time || ''}
-                        onChange={(e) => handleTimeChange(child.cid, 'check_in_time', e.target.value)}
-                        className="text-right"
-                        inputProps={{ max: child.check_out_time || '' }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td className="border p-2 text-right">{`${child.first_name} ${child.last_name}`}</td>
-                  <td className="border p-2 text-right">
-                    <Checkbox
-                      checked={!child.is_absent}
-                      onChange={() => handleCheckInOut(child.cid)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-end mt-4">
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            שמירה
-          </Button>
         </div>
       </div>
     </LocalizationProvider>

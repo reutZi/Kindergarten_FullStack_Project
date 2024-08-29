@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --side-bar-width: 240px; /* Adjust the width of your sidebar */
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.main-container {
+  @apply flex min-h-screen;
+}
+
+.sidebar {
+  @apply fixed top-0 left-0 h-screen bg-gray-800 text-white;
+  width: var(--side-bar-width); /* Fixed width for the sidebar */
+}
+
+.content {
+  @apply flex-grow; /* Content area grows to fill the remaining space */
+  margin-left: var(--side-bar-width); /* Ensures content doesn't overlap with the sidebar */
+}
+
+/* Ensuring dialogs are centered and responsive */
+.dialog {
+  @apply flex flex-col justify-center items-center h-screen;
+}
+
+.dialog-content {
+  @apply w-full max-w-lg bg-white rounded-lg shadow-lg p-8;
+}
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0; /* On smaller screens, remove the sidebar margin */
+  }
+
+  .sidebar {
+    width: 100%; /* Sidebar becomes full width on smaller screens */
+    height: auto;
+    position: static;
+  }
+}
