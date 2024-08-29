@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import LoginParent from './LoginParent';
-import backgroundImage from '../img/background.png';
+import backgroundImage from '../img/bg.jpg';
 
 const Login = () => {
     const [role, setRole] = useState('parent');
@@ -12,7 +12,6 @@ const Login = () => {
     const login = (user) => {
         localStorage.setItem('user', JSON.stringify(user));
   
-        
         // Navigate based on the user's role
         if (role === 'parent') {
             navigate('/parent/choosekid'); // Navigate to parent welcome page
@@ -24,10 +23,11 @@ const Login = () => {
     return (
         <Box
             sx={{
-                minHeight: '97vh',
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                height: '100vh', // Full height of the viewport
+                width: '100vw',  // Full width of the viewport
                 display: 'flex',
                 alignItems: 'center',
                 overflow: 'hidden'
@@ -37,9 +37,9 @@ const Login = () => {
                 <Grid
                     container
                     spacing={1}
-                    justifyContent="flex-start"
+                    justifyContent="flex-start" // Align to the left
                     alignItems="center"
-                    marginLeft={10}
+                    sx={{ marginLeft: '10%' }} // Add margin to move it more to the left
                 >
                     <Grid item xs={12} sm={8} md={5} lg={4}>
                         <Box

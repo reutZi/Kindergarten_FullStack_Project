@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --side-bar-width: 240px; /* Adjust the width of your sidebar */
+    --side-bar-width: 240px;
   }
 
   body {
@@ -13,36 +13,34 @@
 }
 
 .main-container {
-  @apply flex min-h-screen;
+  @apply flex min-h-screen flex-col md:flex-row;
 }
 
 .sidebar {
-  @apply fixed top-0 left-0 h-screen bg-gray-800 text-white;
-  width: var(--side-bar-width); /* Fixed width for the sidebar */
+  @apply bg-gray-800 text-white flex-shrink-0;
+  width: var(--side-bar-width);
+  height: auto;
+  @apply md:fixed md:top-0 md:left-0 md:h-screen;
 }
 
 .content {
-  @apply flex-grow; /* Content area grows to fill the remaining space */
-  margin-left: var(--side-bar-width); /* Ensures content doesn't overlap with the sidebar */
+  @apply flex-grow;
+  margin-left: 0; /* Default margin to 0 */
+  @apply md:ml-[var(--side-bar-width)];
 }
 
-/* Ensuring dialogs are centered and responsive */
-.dialog {
-  @apply flex flex-col justify-center items-center h-screen;
+.full-screen-content {
+  width: 100%;
+  height: 100%;
+  margin-left: 0; /* Ensures no margin from the sidebar */
 }
 
-.dialog-content {
-  @apply w-full max-w-lg bg-white rounded-lg shadow-lg p-8;
-}
-
+/* Sidebar should be full width on small screens */
 @media (max-width: 768px) {
-  .content {
-    margin-left: 0; /* On smaller screens, remove the sidebar margin */
-  }
-
   .sidebar {
-    width: 100%; /* Sidebar becomes full width on smaller screens */
+    width: 100%;
     height: auto;
     position: static;
+    @apply flex-row justify-around items-center;
   }
 }

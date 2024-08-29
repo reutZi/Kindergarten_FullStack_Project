@@ -17,7 +17,7 @@ function AppContent() {
   return (
     <div className="main-container">
      {!isLoginPage && <Navbar className="sidebar" />}
-      <div className="content">
+      <div className={`${isLoginPage ? 'full-screen-content' : 'content'}`}>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="parent/attendance" element={<AttendanceParent />} />

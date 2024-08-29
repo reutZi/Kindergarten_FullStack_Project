@@ -14,20 +14,20 @@ const NavBar = () => {
         { to: `whatsNew`, imgSrc: require('../img/whatsNew.png'), title: '?מה חדש' },
         { to: `/`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
     ];
-    
-  return (
-    <div className="sidebar">
-      <img className="logo-img nav-link" src="/client/img/logo.png" alt="" />
-      {sidebarOptions.map((option, index) => (
-        <Link onClick={option.onClick} to={option.to} key={index}>
-        <div className="option nav-link">
-          <img src={option.imgSrc} alt="" />
-          <span className="option-title">{option.title}</span>
+
+    return (
+        <div className="sidebar flex flex-col md:flex-col">
+            <img className="logo-img nav-link" src="/client/img/logo.png" alt="" />
+            {sidebarOptions.map((option, index) => (
+                <Link onClick={option.onClick} to={option.to} key={index}>
+                    <div className="option nav-link flex flex-col items-center md:flex-row">
+                        <img src={option.imgSrc} alt="" />
+                        <span className="option-title">{option.title}</span>
+                    </div>
+                </Link>
+            ))}
         </div>
-        </Link>
-      ))}
-    </div>
-  );
+    );
 };
 
 export default NavBar;
