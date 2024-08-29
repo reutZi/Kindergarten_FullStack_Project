@@ -53,3 +53,14 @@ CREATE TABLE attendance (
   PRIMARY KEY (cid, date),
   FOREIGN KEY (cid) REFERENCES children(id)
 );
+
+
+/// added
+CREATE TABLE notice_board (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(100),
+  content TEXT,
+  date_posted DATE,
+  kindergarten_id VARCHAR(9),
+  FOREIGN KEY (kindergarten_id) REFERENCES kindergarten(id)
+);

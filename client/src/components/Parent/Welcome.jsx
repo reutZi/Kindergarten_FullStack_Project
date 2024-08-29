@@ -1,12 +1,12 @@
 import React from 'react';
+import NoticeBoard from '../NoticeBoard';
+
 
 const Welcome = () => {
-    return (
-        <div>
-            <h1>Welcome to the KinderGarten Project!</h1>
-            <p>This is the Welcome component.</p>
-        </div>
-    );
+  const user = JSON.parse(localStorage.getItem('user'));
+  return (
+  <NoticeBoard user={user} />
+  );
 };
 
 export default Welcome;

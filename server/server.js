@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const { authenticateToken, authorizeRole } = require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
-
+const noticeBoardRoutes = require('./routes/noticeBoardRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -19,11 +19,12 @@ app.use(express.json());
 //server endpoints 
 app.use('/login', authRoutes);
 app.use('/kindergarten', authenticateToken, authorizeRole('teacher'), kindergartenRoutes);
-app.use('/children', authenticateToken, authorizeRole('teacher'), childrenRoutes);
+app.use('/children', authenticateToken, childrenRoutes);
 app.use('/parent', authenticateToken, authorizeRole('parent'), parentRoutes);
-app.use('/teacher', authenticateToken, authorizeRole('teacher'), teacherRoutes);
+app.use('/teacher', authenticateToken, teacherRoutes);
 app.use('/attendance', authenticateToken, authorizeRole('teacher'), attendanceRoutes);
 app.use('/user', authenticateToken, userRoutes);
+app.use('/noticeBoard', authenticateToken, noticeBoardRoutes);
 
 
 const PORT = process.env.PORT || 5000;

@@ -118,7 +118,28 @@ const getParentPhoneNumberByID = async (req, res) => {
         res.status(500).json({ message: 'Error fetching parent phone number', error: err });
     }
 };
+const getChildrenByParentId = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const children = await new Promise((resolve, reject) => {
+            const query = `
+                SELECT c.id, c.first_name, c.last_name, c.photo_url, c.allergy_info
+                FROM children c
+                JOIN parent p ON c.id = p.cid
+                WHERE p.pid = ?
+            `;
+            db.query(query, [id], (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            });
+        });
+
+        res.status(200).json(children);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching children', error: err });
+    }
+};
 
 
 module.exports = {
@@ -126,5 +147,6 @@ module.exports = {
     getParentById,
     updateParent,
     deleteParent,
-    getParentPhoneNumberByID
+    getParentPhoneNumberByID,
+    getChildrenByParentId
 };
