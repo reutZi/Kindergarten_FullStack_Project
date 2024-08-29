@@ -9,10 +9,10 @@ const NavBar = () => {
 
     const sidebarOptions = [
         { to: `${role}/attendance`, imgSrc: require('../img/attendance.png'), title: 'נוכחות' },
-        { to: `${role}/calendar`, imgSrc: require('../img/calendar.png'), title: 'לוח שנה' },
-        { to: `${role}/noticeBoard`, imgSrc: require('../img/noticeBoard.png'), title: 'הודעות' },
-        { to: `${role}/whats_new`, imgSrc: require('../img/whatsnew.png'), title: '?מה חדש' },
-        { to: `${role}/`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
+        { to: `/calendar`, imgSrc: require('../img/calendar.png'), title: 'לוח שנה' },
+        { to: `noticeBoard`, imgSrc: require('../img/noticeBoard.png'), title: 'הודעות' },
+        { to: `whats_new`, imgSrc: require('../img/whatsnew.png'), title: '?מה חדש' },
+        { to: `/`, imgSrc: require('../img/logout.png'), title: 'התנתקות' }
     ];
     
   return (
