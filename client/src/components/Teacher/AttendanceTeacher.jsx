@@ -19,27 +19,29 @@ const Attendance = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
 
-  const fetchAttendanceData = async (selectedDate) => {
-    try {
-      const attendanceResponse = await axios.get(
-        `http://localhost:4000/attendance/${user.kindergarten_id}/${format(selectedDate, 'yyyy-MM-dd')}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
-      const attendances = attendanceResponse.data;
-      setChildrenWithAttendance(attendances);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching attendance data', error);
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const fetchAttendanceData = async (selectedDate) => {
+      try {
+        
+        const attendanceResponse = await axios.get(
+          `http://localhost:4000/attendance/${user.kindergarten_id}/${format(selectedDate, 'yyyy-MM-dd')}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        const attendances = attendanceResponse.data;
+        setChildrenWithAttendance(attendances);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching attendance data', error);
+        setIsLoading(false);
+      }
+    };
     fetchAttendanceData(date);
   }, [date]);
 

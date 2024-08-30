@@ -6,13 +6,14 @@ const {
     updateKindergarten, 
     deleteKindergarten 
 } = require('../controllers/kindergartenController');
+const {authorizeRole}=require('./middleware/auth');
 
 const router = express.Router();
 
-router.get('/', getAllKindergartens);
+router.get('/',authorizeRole('teacher'), getAllKindergartens);
 router.get('/:id', getKindergartenById);
-router.post('/add', createKindergarten);
-router.put('/update/:id', updateKindergarten);
-router.delete('/delete/:id', deleteKindergarten);
+router.post('/add', authorizeRole('teacher'), createKindergarten);
+router.put('/update/:id', authorizeRole('teacher'), updateKindergarten);
+router.delete('/delete/:id', authorizeRole('teacher'), deleteKindergarten);
 
 module.exports = router;

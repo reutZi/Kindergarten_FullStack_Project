@@ -6,7 +6,7 @@ const childrenRoutes = require('./routes/childrenRoutes');
 const parentRoutes = require('./routes/parentRoutes');
 const teacherRoutes = require('./routes/teacherRoutes');
 const userRoutes = require('./routes/userRoutes');
-const { authenticateToken, authorizeRole } = require('./middleware/auth');
+const { authenticateToken} = require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const noticeBoardRoutes = require('./routes/noticeBoardRoutes');
@@ -30,11 +30,11 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/kindergarte
 
 // Server endpoints 
 app.use('/login', authRoutes);
-app.use('/kindergarten', authenticateToken, authorizeRole('teacher'), kindergartenRoutes);
+app.use('/kindergarten', authenticateToken, kindergartenRoutes);
 app.use('/children', authenticateToken, childrenRoutes);
-app.use('/parent', authenticateToken, authorizeRole('parent'), parentRoutes);
+app.use('/parent', authenticateToken,parentRoutes);
 app.use('/teacher', authenticateToken, teacherRoutes);
-app.use('/attendance', authenticateToken, authorizeRole('teacher'), attendanceRoutes);
+app.use('/attendance', authenticateToken, attendanceRoutes);
 app.use('/user', authenticateToken, userRoutes);
 app.use('/noticeBoard', authenticateToken, noticeBoardRoutes);
 app.use('/pictures', authenticateToken, pictureRoutes); 

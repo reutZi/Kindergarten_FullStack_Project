@@ -5,12 +5,13 @@ const {
     getAttendanceByDate,
     saveAllAttendanceRecords
 } = require('../controllers/attendanceController');
+const {authorizeRole}=require('./middleware/auth');
 
 const router = express.Router();
 
-router.get('/', getAllAttendanceRecords);
+router.get('/', authorizeRole('teacher'),getAllAttendanceRecords);
 router.get('/:cid', getAttendanceByChildId);
-router.get('/:kindergartenId/:date', getAttendanceByDate);
+router.get('/:kindergartenId/:date',authorizeRole('teacher'), getAttendanceByDate);
 router.post('/save', saveAllAttendanceRecords);
 
 
