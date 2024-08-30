@@ -17,7 +17,7 @@ const NavBar = () => {
         { to: `/parent/chooseKid`, imgSrc: require('../img/chooseKid.png'), title: 'משתמש' },
         { to: `${user.role}/attendance`, imgSrc: require('../img/attendance.png'), title: 'נוכחות' },
         { to: `noticeBoard`, imgSrc: require('../img/noticeBoard.png'), title: 'הודעות' },
-        { to: `whatsNew`, imgSrc: require('../img/whatsnew.png'), title: '?מה חדש' },
+        { to: `whatsNew`, imgSrc: require('../img/whatsNew.png'), title: '?מה חדש' },
         { to: `#`, imgSrc: require('../img/logout.png'), title: 'התנתקות', onClick: handleLogout }
     ];
 

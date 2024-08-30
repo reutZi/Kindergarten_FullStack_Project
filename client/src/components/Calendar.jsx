@@ -64,6 +64,8 @@ const Calendar = ({ onFutureDateClick, onPastDateClick, minMonth, maxMonth }) =>
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
     const days = [];
 
+    const today = new Date();
+
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="p-2"></div>);
     }
@@ -73,11 +75,12 @@ const Calendar = ({ onFutureDateClick, onPastDateClick, minMonth, maxMonth }) =>
       const isAbsent = attendanceData.some(
         (attendance) => new Date(attendance.date).toDateString() === date.toDateString() && attendance.is_absent
       );
+      const isToday = date.toDateString() === today.toDateString();
 
       days.push(
         <div
           key={day}
-          className={`p-2 text-center cursor-pointer ${isAbsent ? 'bg-red-200' : ''}`}
+          className={`p-2 text-center cursor-pointer ${isAbsent ? 'bg-red-200' : ''} ${isToday ? 'bg-blue-500 font-bold border-2 border-blue-500' : ''}`}
           onClick={() => handleDateClick(date)}
         >
           {day}

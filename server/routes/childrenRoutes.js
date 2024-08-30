@@ -8,7 +8,7 @@ const {
     updateChild,
     deleteChild
 } = require('../controllers/childrenController');
-const {authorizeRole}=require('./middleware/auth');
+const {authorizeRole} = require('../middleware/auth');
 
 const router = express.Router();
 

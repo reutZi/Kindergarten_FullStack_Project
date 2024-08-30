@@ -8,7 +8,7 @@ const {
     getAttendanceByMonth,
     saveAttendanceRecord
 } = require('../controllers/parentController');
-const {authorizeRole}=require('./middleware/auth');
+const {authorizeRole} = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', authorizeRole('parent'),getAllParents);

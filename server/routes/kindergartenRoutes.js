@@ -6,7 +6,7 @@ const {
     updateKindergarten, 
     deleteKindergarten 
 } = require('../controllers/kindergartenController');
-const {authorizeRole}=require('./middleware/auth');
+const {authorizeRole} = require('../middleware/auth');
 
 const router = express.Router();
 

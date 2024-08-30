@@ -10,7 +10,7 @@ const { authenticateToken} = require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const noticeBoardRoutes = require('./routes/noticeBoardRoutes');
-const pictureRoutes = require('./routes/pictureRoutes'); // Add this line
+const pictureRoutes = require('./routes/pictureRoutes'); 
 require('dotenv').config();
 
 const app = express();

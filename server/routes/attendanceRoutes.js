@@ -5,7 +5,7 @@ const {
     getAttendanceByDate,
     saveAllAttendanceRecords
 } = require('../controllers/attendanceController');
-const {authorizeRole}=require('./middleware/auth');
+const {authorizeRole} = require('../middleware/auth');
 
 const router = express.Router();
 

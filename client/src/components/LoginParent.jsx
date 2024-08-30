@@ -19,28 +19,33 @@ const LoginParent = ({ role, setRole, login }) => {
 
     const onSubmit = async (data) => {
         try {
-            // Post login data to the server
             const loginResponse = await axios.post(`${API_URL}/login`, {
                 username: data.userName,
-                password: data.password
+                password: data.password,
+                role: role
             });
-            
+    
             const { token, user } = loginResponse.data;
     
-            // Check if token was received
             if (!token) {
                 throw new Error('Login failed, no token received');
             }
     
-            // Save token to local storage
             localStorage.setItem('token', token);
             login(user);  
     
         } catch (error) {
             console.log("The problem is here:", error.message);
-            alert(error.message);
+    
+            // Display specific error messages based on server response
+            if (error.response && error.response.data.message) {
+                alert(error.response.data.message);
+            } else {
+                alert('An unexpected error occurred. Please try again.');
+            }
         }
     };
+    
     
 
     return (

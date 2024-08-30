@@ -84,18 +84,33 @@ const createChild = async (req, res) => {
 const updateChild = async (req, res) => {
     const { id } = req.params;
     const { first_name, last_name, photo_url, allergy_info, kindergarten_id } = req.body;
+    
     try {
         await new Promise((resolve, reject) => {
-            db.query('UPDATE children SET first_name = ?, last_name = ?, photo_url = ?, allergy_info = ?, kindergarten_id = ? WHERE id = ?', [first_name, last_name, photo_url, allergy_info, kindergarten_id, id], (err, results) => {
+            db.query(
+                'UPDATE children SET first_name = ?, last_name = ?, photo_url = ?, allergy_info = ?, kindergarten_id = ? WHERE id = ?',
+                [first_name, last_name, photo_url, allergy_info, kindergarten_id, id],
+                (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results);
+                }
+            );
+        });
+
+        // Fetch the updated child details
+        const updatedChild = await new Promise((resolve, reject) => {
+            db.query('SELECT * FROM children WHERE id = ?', [id], (err, results) => {
                 if (err) return reject(err);
-                resolve(results);
+                resolve(results[0]);
             });
         });
-        res.status(200).json({ message: 'Child updated successfully' });
+
+        res.status(200).json({ message: 'Child updated successfully', child: updatedChild });
     } catch (err) {
         res.status(500).json({ message: 'Error updating child', error: err });
     }
 };
+
 
 // Delete child
 const deleteChild = async (req, res) => {

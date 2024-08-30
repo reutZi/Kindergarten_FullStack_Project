@@ -1,6 +1,6 @@
 const express = require('express');
-const { getNewsByKindergartenId,postNews,editNews,deleteNews } = require('../controllers/noticeBoardController');
-const {authorizeRole}=require('./middleware/auth');
+const { getNewsByKindergartenId, postNews, editNews, deleteNews } = require('../controllers/noticeBoardController');
+const {authorizeRole} = require('../middleware/auth');
 
 
 

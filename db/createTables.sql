@@ -16,7 +16,6 @@ CREATE TABLE children (
   allergy_info TEXT,
   kindergarten_id VARCHAR(9),
   FOREIGN KEY (kindergarten_id) REFERENCES kindergarten(id)
-
 );
 
 CREATE TABLE users (

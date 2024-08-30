@@ -4,7 +4,7 @@ const {
     getTeacherById,
     getTeacherByKindergartenId 
 } = require('../controllers/teacherController');
-const {authorizeRole}=require('./middleware/auth');
+const {authorizeRole}=require('../middleware/auth');
 
 const router = express.Router();
 

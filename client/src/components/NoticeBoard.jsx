@@ -13,8 +13,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import { useKid } from './KidContext';
 
-const NoticeBoard = ({ user, classID = 'K001' }) => {
+const NoticeBoard = ({ user }) => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [teacherName, setTeacherName] = useState('');
@@ -22,6 +23,8 @@ const NoticeBoard = ({ user, classID = 'K001' }) => {
     const [newNews, setNewNews] = useState({ title: '', content: '' });
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editValues, setEditValues] = useState({ title: '', content: '' });
+
+    const { kindergartenId } = useKid();
 
     const fetchNews = async () => {
         try {
@@ -33,11 +36,11 @@ const NoticeBoard = ({ user, classID = 'K001' }) => {
             };
 
             // Fetch teacher details using kindergarten ID
-            const teacherResponse = await axios.get(`http://localhost:4000/teacher/kindergarten/${classID}`, config);
+            const teacherResponse = await axios.get(`http://localhost:4000/teacher/kindergarten/${kindergartenId}`, config);
             setTeacherName(`${teacherResponse.data.first_name} ${teacherResponse.data.last_name}`);
 
             // Fetch news for the kindergarten
-            const newsResponse = await axios.get(`http://localhost:4000/noticeBoard/${classID}`, config);
+            const newsResponse = await axios.get(`http://localhost:4000/noticeBoard/${kindergartenId}`, config);
             setNews(newsResponse.data);
         } catch (error) {
             console.error('Error fetching news:', error);
@@ -48,7 +51,7 @@ const NoticeBoard = ({ user, classID = 'K001' }) => {
 
     useEffect(() => {
         fetchNews();
-    }, [classID]);
+    }, [kindergartenId]);
 
     const handleAddNews = async () => {
         try {
@@ -63,7 +66,7 @@ const NoticeBoard = ({ user, classID = 'K001' }) => {
                 {
                     title: newNews.title,
                     content: newNews.content,
-                    kindergarten_id: classID,
+                    kindergarten_id: kindergartenId,
                 },
                 config
             );
