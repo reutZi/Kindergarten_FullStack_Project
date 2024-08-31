@@ -1,64 +1,61 @@
+-- Use the our_kindergarten database
 USE our_kindergarten;
 
-ALTER TABLE attendance ADD COLUMN absence_reason VARCHAR(255);
+-- Insert data into the kindergarten table
+INSERT INTO kindergarten (id, name, city) VALUES
+('001', 'גן דובדבן', 'תל אביב'),
+('002', 'גן פעמון', 'ירושלים'),
+('003', 'גן כלנית', 'חיפה');
 
+-- Insert data into the children table
+INSERT INTO children (id, first_name, last_name, photo_url, allergy_info, kindergarten_id) VALUES
+('10001', 'אורי', 'כהן', 'https://example.com/photo1.jpg', 'בוטנים', '001'),
+('10002', 'נועה', 'לוי', 'https://example.com/photo2.jpg', 'חלב', '001'),
+('10003', 'דניאל', 'ישראלי', 'https://example.com/photo3.jpg', 'גלוטן', '001'),
+('10004', 'יובל', 'שמש', 'https://example.com/photo4.jpg', 'שום', '002'),
+('10005', 'מיה', 'רוזן', 'https://example.com/photo5.jpg', 'דגים', '002'),
+('10006', 'איתי', 'מלמד', 'https://example.com/photo6.jpg', 'אגוזים', '002'),
+('10007', 'אלון', 'גפן', 'https://example.com/photo7.jpg', 'אין', '003'),
+('10008', 'מאיה', 'לביא', 'https://example.com/photo8.jpg', 'ביצים', '003'),
+('10009', 'תמר', 'ירדן', 'https://example.com/photo9.jpg', 'שומשום', '003'),
+('10010', 'שחר', 'כהן', 'https://example.com/photo10.jpg', 'שום', '001'),
+('10011', 'ליאן', 'כהן', 'https://example.com/photo11.jpg', 'אבקנים', '001'),
+('10012', 'עידו', 'כהן', 'https://example.com/photo12.jpg', 'אגוזים', '001');
 
--- Insert into Kindergarten table
-INSERT INTO kindergarten (id, name, city) 
-VALUES ('K001', 'Happy Kids Kindergarten', 'Springfield');
+-- Insert data into the users table
+INSERT INTO users (id, first_name, last_name, username, password, phone, role) VALUES
+('20001', 'אורי', 'כהן', 'ori_k', 'password123', '0501234567', 'parent'),
+('20002', 'יובל', 'לוי', 'yuval_l', 'password123', '0502345678', 'parent'),
+('20003', 'מאיה', 'רוזן', 'maya_r', 'password123', '0503456789', 'parent'),
+('20004', 'דוד', 'שמש', 'david_s', 'password123', '0504567890', 'teacher'),
+('20005', 'רונית', 'לביא', 'ronit_l', 'password123', '0505678901', 'teacher');
 
--- Insert into Users table for the teacher
-INSERT INTO users (id, first_name, last_name, username, password, phone, role) 
-VALUES ('T001', 'John', 'Doe', 'jdoe', 'password123', '1234567890', 'teacher');
+-- Insert data into the parent table
+INSERT INTO parent (pid, cid) VALUES
+('20001', '10001'),
+('20001', '10010'),
+('20001', '10011'),
+('20001', '10012'),  -- Parent with four children
+('20002', '10002'),
+('20003', '10005'),
+('20003', '10006'),
+('20003', '10007');  -- Parent with three children
 
--- Insert into Users table for the parents
-INSERT INTO users (id, first_name, last_name, username, password, phone, role) 
-VALUES 
-('P001', 'Jane', 'Smith', 'jsmith', 'parentpass1', '0987654321', 'parent'),
-('P002', 'Alice', 'Johnson', 'ajohnson', 'parentpass2', '0123456789', 'parent'),
-('P003', 'Robert', 'Brown', 'rbrown', 'parentpass3', '2345678901', 'parent'),
-('P004', 'Mary', 'Williams', 'mwilliams', 'parentpass4', '3456789012', 'parent'),
-('P005', 'Michael', 'Miller', 'mmiller', 'parentpass5', '4567890123', 'parent');
+-- Insert data into the teacher table
+INSERT INTO teacher (tid, kin_id) VALUES
+('20004', '001'),
+('20005', '002');
 
--- Insert into Children table
-INSERT INTO children (id, first_name, last_name, photo_url, allergy_info, kindergarten_id) 
-VALUES 
-('C001', 'Emily', 'Smith', 'photo_url_1', 'Peanuts', 'K001'),
-('C002', 'Liam', 'Johnson', 'photo_url_2', 'None', 'K001'),
-('C003', 'Sophia', 'Brown', 'photo_url_3', 'Gluten', 'K001'),
-('C004', 'James', 'Williams', 'photo_url_4', 'None', 'K001'),
-('C005', 'Olivia', 'Miller', 'photo_url_5', 'Milk', 'K001');
+-- Insert data into the attendance table
+INSERT INTO attendance (cid, date, check_in_time, check_out_time, is_absent, expected_in_time, absence_reason) VALUES
+('10001', '2024-08-31', '08:00:00', '13:00:00', FALSE, NULL, NULL),
+('10002', '2024-08-31', '08:10:00', '13:05:00', FALSE, NULL, NULL),
+('10003', '2024-08-31', '08:15:00', '12:55:00', TRUE, NULL, 'מחלה'),
+('10004', '2024-08-31', '08:20:00', '13:15:00', FALSE, NULL, NULL),
+('10005', '2024-08-31', '08:30:00', '13:25:00', FALSE, NULL, NULL);
 
--- Insert into Parent table (each parent with one child)
-INSERT INTO parent (pid, cid) 
-VALUES 
-('P001', 'C001'),
-('P002', 'C002'),
-('P003', 'C003'),
-('P004', 'C004'),
-('P005', 'C005');
-
--- Insert into Teacher table
-INSERT INTO teacher (tid, kin_id) 
-VALUES ('T001', 'K001');
-
-USE our_kindergarten;
-
--- Insert attendance records for today for all children in the kindergarten
-INSERT INTO attendance (cid, date, check_in_time, check_out_time, is_absent, expected_in_time) 
-VALUES 
-('C001', CURDATE(), '08:00:00', '14:00:00', FALSE, '08:00:00'),
-('C002', CURDATE(), '08:05:00', '14:00:00', FALSE, '08:00:00'),
-('C003', CURDATE(), '08:10:00', '14:00:00', FALSE, '08:00:00'),
-('C004', CURDATE(), '08:15:00', '14:00:00', FALSE, '08:00:00'),
-('C005', CURDATE(), '08:20:00', '14:00:00', FALSE, '08:00:00');
-
-
-
-
-/// added 
-INSERT INTO notice_board (title, content, date_posted, teacher_id, kindergarten_id) 
-VALUES 
-('ברוכים הבאים!', 'אנחנו מתרגשים לקבל את כולכם בחזרה לגן. בואו נעשה שנה נהדרת!', CURDATE(), 'T001', 'K001'),
-('שמירה על בריאות', 'נא לזכור להגיש את עדכון הבריאות של ילדכם עד סוף השבוע.', CURDATE(), 'T001', 'K001'),
-('טיול מתקרב', 'הכיתה שלנו תצא לטיול לגן החיות בחודש הבא. פרטים נוספים בקרוב.', CURDATE(), 'T001', 'K001');
+-- Insert data into the notice_board table
+INSERT INTO notice_board (title, content, date_posted, kindergarten_id) VALUES
+('ברוכים הבאים', 'הורים יקרים, אנו שמחים לקבל אתכם לשנה החדשה בגן דובדבן!', '2024-08-30', '001'),
+('חג סוכות', 'בגן פעמון נתחיל את החגיגות מחר בשעה 10:00 בבוקר. כולם מוזמנים!', '2024-08-31', '002'),
+('טיול שנתי', 'גן כלנית יוצא לטיול שנתי ביום ראשון הקרוב. נא לא לשכוח להביא כובע ומים!', '2024-08-30', '003');

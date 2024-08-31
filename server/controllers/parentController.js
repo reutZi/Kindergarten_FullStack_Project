@@ -125,7 +125,7 @@ const getChildrenByParentId = async (req, res) => {
     try {
         const children = await new Promise((resolve, reject) => {
             const query = `
-                SELECT c.id, c.first_name, c.last_name, c.photo_url, c.allergy_info
+                SELECT c.id, c.first_name, c.last_name, c.photo_url, c.allergy_info, c.kindergarten_id
                 FROM children c
                 JOIN parent p ON c.id = p.cid
                 WHERE p.pid = ?

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Typography, Box } from '@mui/material';
 import axios from 'axios';
 
@@ -7,6 +7,11 @@ const ChildProfile = ({ child }) => {
   const [editedChild, setEditedChild] = useState(child);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  // Update the local state whenever the child prop changes
+  useEffect(() => {
+    setEditedChild(child);
+  }, [child]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -30,7 +35,6 @@ const ChildProfile = ({ child }) => {
       });
 
       if (response.status === 200) {
-        // Use the updated child data from the response
         setEditedChild(response.data.child);
         setIsEditing(false);
         setSuccess(true);
@@ -49,8 +53,6 @@ const ChildProfile = ({ child }) => {
 
   return (
     <Box className="p-4 bg-white rounded-lg shadow-md" direction="rtl">
-      {/* Removed the heading */}
-
       {isEditing ? (
         <>
           <TextField
@@ -59,8 +61,8 @@ const ChildProfile = ({ child }) => {
             value={editedChild.first_name}
             onChange={handleChange}
             fullWidth
-            className="mb-4" // Added margin bottom for spacing
-            inputProps={{ style: { textAlign: 'right' } }} // Align text to the right
+            className="mb-4"
+            inputProps={{ style: { textAlign: 'right' } }}
           />
           <TextField
             name="last_name"
@@ -68,19 +70,19 @@ const ChildProfile = ({ child }) => {
             value={editedChild.last_name}
             onChange={handleChange}
             fullWidth
-            className="mb-4" // Added margin bottom for spacing
-            inputProps={{ style: { textAlign: 'right' } }} // Align text to the right
+            className="mb-4"
+            inputProps={{ style: { textAlign: 'right' } }}
           />
           <TextField
             name="allergy_info"
             label="מידע על אלרגיות"
-            value={editedChild.allergy_info}
+            value={editedChild.allergy_info || "לא צוינו אלרגיות"}
             onChange={handleChange}
             fullWidth
             multiline
             rows={3}
-            className="mb-4" // Added margin bottom for spacing
-            inputProps={{ style: { textAlign: 'right' } }} // Align text to the right
+            className="mb-4"
+            inputProps={{ style: { textAlign: 'right' } }}
           />
           <Button variant="contained" onClick={handleSave} className="mt-4">
             שמור שינויים
@@ -88,9 +90,9 @@ const ChildProfile = ({ child }) => {
         </>
       ) : (
         <>
-          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם פרטי: {editedChild.first_name}</Typography>
-          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם משפחה: {editedChild.last_name}</Typography>
-          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>מידע על אלרגיות: {editedChild.allergy_info}</Typography>
+          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם פרטי: {child.first_name}</Typography>
+          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם משפחה: {child.last_name}</Typography>
+          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>מידע על אלרגיות: {child.allergy_info}</Typography>
           <Button variant="outlined" onClick={handleEdit} className="mt-4">
             עריכת פרטים
           </Button>

@@ -41,6 +41,7 @@ const ChooseKid = () => {
   const handleKidSelect = (event) => {
     const kid = kids.find(k => k.id === event.target.value);
     setSelectedKid(kid);
+
     setKindergartenId(kid.kindergarten_id);  // Set the kindergarten ID when a kid is selected
   };
 

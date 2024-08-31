@@ -5,6 +5,7 @@ import PastAttendanceDialog from '../PastAttendanceDialog';
 import axios from 'axios';
 import "../../style/App.css";
 import "../../style/attendance.css"; // Import the custom styles
+import { useKid } from '../KidContext';
 
 const AttendanceParent = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -13,8 +14,9 @@ const AttendanceParent = () => {
   const [attendanceData, setAttendanceData] = useState(null);
 
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
-  const childId = user ? user.children[0].id : null;
+  const { selectedKid } = useKid();
+  const childId = selectedKid?.id;
+
 
   const handleFutureDateClick = (date) => {
     setSelectedDate(date);
