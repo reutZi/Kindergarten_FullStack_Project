@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Typography, Box } from '@mui/material';
+import { Button, TextField, Typography, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 
 const ChildProfile = ({ child }) => {
@@ -51,40 +52,47 @@ const ChildProfile = ({ child }) => {
     setEditedChild(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleCloseSuccessDialog = () => {
+    setSuccess(false);
+  };
+
   return (
     <Box className="p-4 bg-white rounded-lg shadow-md" direction="rtl">
       {isEditing ? (
         <>
-          <TextField
-            name="first_name"
-            label="שם פרטי"
-            value={editedChild.first_name}
-            onChange={handleChange}
-            fullWidth
-            className="mb-4"
-            inputProps={{ style: { textAlign: 'right' } }}
-          />
-          <TextField
-            name="last_name"
-            label="שם משפחה"
-            value={editedChild.last_name}
-            onChange={handleChange}
-            fullWidth
-            className="mb-4"
-            inputProps={{ style: { textAlign: 'right' } }}
-          />
-          <TextField
-            name="allergy_info"
-            label="מידע על אלרגיות"
-            value={editedChild.allergy_info || "לא צוינו אלרגיות"}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={3}
-            className="mb-4"
-            inputProps={{ style: { textAlign: 'right' } }}
-          />
-          <Button variant="contained" onClick={handleSave} className="mt-4">
+          <Box mb={2}>
+            <TextField
+              name="first_name"
+              label="שם פרטי"
+              value={editedChild.first_name}
+              onChange={handleChange}
+              fullWidth
+              inputProps={{ style: { textAlign: 'right' }, dir: "rtl" }}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              name="last_name"
+              label="שם משפחה"
+              value={editedChild.last_name}
+              onChange={handleChange}
+              fullWidth
+              inputProps={{ style: { textAlign: 'right' }, dir: "rtl" }}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              name="allergy_info"
+              label="מידע על אלרגיות"
+              value={editedChild.allergy_info || "אין מידע על אלרגיות ידועות"}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={3}
+              inputProps={{ style: { textAlign: 'right' }, dir: "rtl" }}
+            />
+          </Box>
+          <Button variant="contained" onClick={handleSave}>
             שמור שינויים
           </Button>
         </>
@@ -92,7 +100,7 @@ const ChildProfile = ({ child }) => {
         <>
           <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם פרטי: {child.first_name}</Typography>
           <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>שם משפחה: {child.last_name}</Typography>
-          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>מידע על אלרגיות: {child.allergy_info}</Typography>
+          <Typography variant="body1" className="mb-4" style={{ textAlign: 'right' }}>מידע על אלרגיות: {child.allergy_info || "אין מידע על אלרגיות ידועות"}</Typography>
           <Button variant="outlined" onClick={handleEdit} className="mt-4">
             עריכת פרטים
           </Button>
@@ -100,7 +108,18 @@ const ChildProfile = ({ child }) => {
       )}
 
       {error && <Typography color="error" className="mt-4" style={{ textAlign: 'right' }}>{error}</Typography>}
-      {success && <Typography color="success" className="mt-4" style={{ textAlign: 'right' }}>הפרטים עודכנו בהצלחה!</Typography>}
+
+      <Dialog open={success} onClose={handleCloseSuccessDialog}>
+        <DialogTitle style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          הפרטים עודכנו בהצלחה
+          <CheckCircleIcon style={{ marginLeft: 8 }} />
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseSuccessDialog} color="primary">
+            סגור
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

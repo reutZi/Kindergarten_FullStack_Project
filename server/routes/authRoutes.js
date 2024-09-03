@@ -24,12 +24,13 @@ router.post('/', async (req, res) => {
 
         if (user.role === 'teacher') {
             const [results] = await db.promise().query('SELECT kin_id FROM teacher WHERE tid = ?', [user.id]);
+            console.log("results: " , results);
             if (results.length > 0) {
                 kindergartenId = results[0].kin_id;
             }
         } else if (user.role === 'parent') {
             const [results] = await db.promise().query(`
-                SELECT c.id, c.first_name, c.last_name, c.photo_url, c.allergy_info, c.kindergarten_id
+                SELECT c.id, c.first_name, c.last_name, c.allergy_info, c.kindergarten_id, c.parent1_phone, c.parent2_phone
                 FROM children c
                 JOIN parent p ON c.id = p.cid
                 WHERE p.pid = ?

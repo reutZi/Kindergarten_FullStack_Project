@@ -55,7 +55,9 @@ const ChooseKid = () => {
 
   return (
     <div className="container mx-auto mt-4 rtl">
-      <h1 className="text-4xl font-bold text-right mb-4">בחר ילד</h1>
+      <h1 className="text-4xl font-bold text-right mb-4">פרופיל משתמש</h1>
+      {kids.length > 1 ? (<p className="text-1xl text-right mb-4">בחר בשם הילד עבורו תרצה להציג נתונים</p>):
+      ""}
 
       {kids.length > 1 ? (
         <Select

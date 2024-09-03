@@ -9,6 +9,7 @@ import ChooseKid from "./components/Parent/ChooseKid";
 import WhatsNew from "./components/WhatsNew";
 import "./style/App.css";
 import { KidProvider, useKid } from "./components/KidContext"; // Import KidProvider
+import ChildrenTable from "./components/Teacher/ChildrenTable";
 
 function AppContent() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="parent/attendance" element={isParentWithoutKid ? <Navigate to="/parent/chooseKid" /> : <AttendanceParent />} />
+          <Route path="teacher/children" element={<ChildrenTable />}/>
           <Route path="teacher/attendance" element={<AttendanceTeacher />} />
           <Route path="parent/chooseKid" element={<ChooseKid />} />
           <Route path="noticeboard" element={isParentWithoutKid ? <Navigate to="/parent/chooseKid" /> : <NoticeBoard user={user} />} />

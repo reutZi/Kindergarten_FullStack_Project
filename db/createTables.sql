@@ -15,8 +15,11 @@ CREATE TABLE children (
   photo_url TEXT,
   allergy_info TEXT,
   kindergarten_id VARCHAR(9),
+  parent1_phone VARCHAR(15),
+  parent2_phone VARCHAR(15),
   FOREIGN KEY (kindergarten_id) REFERENCES kindergarten(id)
 );
+
 
 CREATE TABLE users (
   id VARCHAR(9) PRIMARY KEY,
@@ -29,10 +32,11 @@ CREATE TABLE users (
 );
 
 CREATE TABLE parent (
-  pid VARCHAR(9) PRIMARY KEY,
+  pid VARCHAR(9),
   cid VARCHAR(9),
   FOREIGN KEY (cid) REFERENCES children(id),
-  FOREIGN KEY (pid) REFERENCES users(id)
+  FOREIGN KEY (pid) REFERENCES users(id),
+  PRIMARY KEY (pid, cid)
 );
 
 CREATE TABLE teacher (
