@@ -36,7 +36,7 @@ const UploadPictureDialog = ({ open, onClose, onUpload }) => {
             variant="contained"
             component="label"
           >
-            בחר קובץ
+            בחר תמונה להעלאה
             <input
               type="file"
               hidden

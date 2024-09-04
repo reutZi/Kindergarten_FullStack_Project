@@ -92,6 +92,7 @@ const deleteParent = async (req, res) => {
         res.status(500).json({ message: 'Error deleting parent', error: err });
     }
 };
+
 // Get parent's phone number by child ID
 const getParentPhoneNumberByID = async (req, res) => {
     const { childId } = req.params;

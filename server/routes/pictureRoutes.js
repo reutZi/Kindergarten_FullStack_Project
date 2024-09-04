@@ -17,23 +17,31 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
-  const { kindergarten_id } = req.query;
+  const { kindergartenId } = req.query;
+
+  // Ensure kindergarten_id is provided
+  if (!kindergartenId) {
+    return res.status(400).json({ message: 'Kindergarten ID is required' });
+  }
+
   try {
-    const pictures = await Picture.find({ kindergarten_id });
+    // Fetch pictures for the specified kindergarten
+    const pictures = await Picture.find({ kindergartenId });
     res.json(pictures);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching pictures' });
   }
 });
 
+
 router.post('/upload', upload.single('image'), async (req, res) => {
-  const { title, uploadedBy, kindergarten_id } = req.body;
+  const { title, uploadedBy, kindergartenId } = req.body;
   try {
     const newPicture = new Picture({
       title,
       imageUrl: `/uploads/${req.file.filename}`,
       uploadedBy,
-      kindergarten_id,
+      kindergartenId,
       uploadDate: new Date()
     });
     await newPicture.save();

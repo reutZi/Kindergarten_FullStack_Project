@@ -4,7 +4,7 @@ const pictureSchema = new mongoose.Schema({
   title: String,
   imageUrl: String,
   uploadedBy: String,
-  kindergarten_id: String,  
+  kindergartenId: String,  
   uploadDate: { type: Date, default: Date.now }
 });
 

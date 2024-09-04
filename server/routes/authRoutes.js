@@ -24,7 +24,6 @@ router.post('/', async (req, res) => {
 
         if (user.role === 'teacher') {
             const [results] = await db.promise().query('SELECT kin_id FROM teacher WHERE tid = ?', [user.id]);
-            console.log("results: " , results);
             if (results.length > 0) {
                 kindergartenId = results[0].kin_id;
             }
