@@ -82,7 +82,7 @@ const Attendance = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('Attendance saved successfully');
+      alert('הנוכחות נשמרה בהצלחה');
     } catch (error) {
       console.error('Error saving attendance data', error);
     }
@@ -132,8 +132,8 @@ const Attendance = () => {
                 לא נמצאו תוצאות מתאימות
               </div>
             ) : (
-              <div className="table-container overflow-auto max-h-[400px]">
-                <table className="min-w-full table-auto border-collapse">
+              <div className="table-container">
+              <table className="w-full min-w-full table-auto border-collapse">            
                   <thead>
                     <tr className="bg-gray-200">
                       <th className="border p-2 text-right">סיבת היעדרות</th>
