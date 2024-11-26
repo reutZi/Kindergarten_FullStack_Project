@@ -43,7 +43,7 @@ This system serves as a comprehensive management tool for kindergartens, emphasi
   - **MySQL**: Structured data (e.g., attendance records)
   - **MongoDB**: Unstructured data (e.g., photos)
 - **API Communication**: Axios
-- **Notifications**: Integrated phone notifications
+- **Notifications**: Text messages using Twilio
 - **Local Server**: For development and testing
 
 ---
@@ -87,6 +87,8 @@ Create a .env file in the backend directory with your MySQL, MongoDB, and notifi
 
 3. Access the application in your browser at http://localhost:3000.
 
+![image](https://github.com/user-attachments/assets/7d10a73d-6442-4bd0-93fd-06aaedeee10e)
+![image](https://github.com/user-attachments/assets/517ecfbe-e0c1-4eb4-a0d1-b2dbbc697772)
 
 
    
